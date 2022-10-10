@@ -14,23 +14,36 @@ spring:
     username: 15653674386@163.com    # 邮箱账号
     password: RBNJGWNAHZSMLRTO   # 邮箱授权码
     protocol: smtp       # 协议
-    # 发送邮件时采用ssl安全连接
     properties:
       mail:
         smtp:
           ssl:
-            enable: true
+            enable: true     # 发送邮件时采用ssl安全连接
+
+
 ---
 # 设置dev开发环境
 spring:
   profiles: dev # 设置预设名
-  # 配置数据源
+  # 配置MySql数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # 设置驱动程序
     Type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://localhost:3306/QanXun_IOT?useSSL=false # 设置数据库
     username: root  # 数据库用户名
     password: 1234  # 数据库密码
+  # 配置Redis数据源
+  redis:
+    host: 127.0.0.1 # 连接地址
+    port: 6379 # 连接端口
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: -1 # 最大阻塞等待时间(-1表示无限制)
+        max-idle: 8 # 最大空闲
+        min-idle: 0 # 最小空闲
+
+
 logging:
   config: classpath:logback/dev-logback.xml # 配置LogBack日志框架配文件路径
 ---

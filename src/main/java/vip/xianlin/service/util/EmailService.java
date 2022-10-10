@@ -1,4 +1,4 @@
-package vip.xianlin.service;
+package vip.xianlin.service.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,8 @@ import java.util.Arrays;
 @Component
 @Service
 public class EmailService {
+    @Autowired
+    private RedisService redisService; // 注入Redis数据库服务类
     
     @Autowired
     private JavaMailSender mailSender;
@@ -37,7 +39,7 @@ public class EmailService {
     public void sendEmailVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
         String verifyCode = verificationCodeService.generateVerificationCode();
-    
+        redisService.putData(toAddress, verifyCode); // 往Redis数据内存入 邮箱=>验证码, 时效五分钟
         //创建邮件正文
         Context context = new Context();
         context.setVariable("verifyCode", Arrays.asList(verifyCode.split("")));

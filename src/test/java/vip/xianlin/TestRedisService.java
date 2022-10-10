@@ -3,15 +3,14 @@ package vip.xianlin;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import vip.xianlin.service.util.EmailService;
+import vip.xianlin.service.util.RedisService;
 
 @SpringBootTest
-class QanXunIotApplicationTests {
+public class TestRedisService {
     @Autowired
-    private EmailService emailService;
+    RedisService redisService;
     
     @Test
     void contextLoads() {
-        emailService.sendEmailVerificationCode("2683971783@qq.com");
     }
 }

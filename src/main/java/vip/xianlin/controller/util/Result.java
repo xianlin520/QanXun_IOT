@@ -1,4 +1,4 @@
-package vip.xianlin.controller.lib;
+package vip.xianlin.controller.util;
 
 public class Result {
     private Integer code;

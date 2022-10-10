@@ -3,7 +3,7 @@ package vip.xianlin.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import vip.xianlin.controller.lib.Result;
+import vip.xianlin.controller.util.Result;
 import vip.xianlin.domain.UserData;
 import vip.xianlin.util.JwtUtil;
 import vip.xianlin.service.UserService;

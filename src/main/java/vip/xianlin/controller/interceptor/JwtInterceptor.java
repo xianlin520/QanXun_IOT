@@ -6,7 +6,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import vip.xianlin.exception.BusinessException;
 import vip.xianlin.util.JwtUtil;
-import vip.xianlin.controller.lib.Code;
+import vip.xianlin.controller.util.Code;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

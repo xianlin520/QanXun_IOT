@@ -1,4 +1,4 @@
-package vip.xianlin.controller.lib;
+package vip.xianlin.controller.util;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
