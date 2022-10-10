@@ -1,0 +1,31 @@
+server:
+  # 设置服务启动端口
+  port: 8888
+
+ # 设置Jwt秘钥(慎改)
+jwt_secret: XianLin
+spring:
+  profiles:
+    active: dev # 选择 开发环境/预设配置
+  # MailProperties 邮箱设置
+---
+# 设置dev开发环境
+spring:
+  profiles: dev # 设置预设名
+  # 配置数据源
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver # 设置驱动程序
+    Type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/QanXun_IOT?useSSL=false # 设置数据库
+    username: root  # 数据库用户名
+    password: 1234  # 数据库密码
+logging:
+  config: classpath:logback/dev-logback.xml # 配置LogBack日志框架配文件路径
+---
+# 设置prod生产环境
+spring:
+  profiles: prod
+---
+# 设置test生产环境
+spring:
+  profiles: test
