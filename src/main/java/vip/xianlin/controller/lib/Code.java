@@ -2,6 +2,8 @@ package vip.xianlin.controller.lib;
 
 
 public class Code {
+    public static final Integer OK = 200;
+    
     public static final Integer GET_OK = 200;
     public static final Integer GET_ERR = 404;
     public static final Integer POST_OK = 200;

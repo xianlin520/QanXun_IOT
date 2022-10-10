@@ -5,10 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import vip.xianlin.exception.BusinessException;
-import vip.xianlin.lib.JwtUtil;
-import vip.xianlin.controller.lib.Result;
+import vip.xianlin.util.JwtUtil;
 import vip.xianlin.controller.lib.Code;
-import vip.xianlin.controller.lib.ProjectExceptionAdvice;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

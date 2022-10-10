@@ -2,7 +2,7 @@ package vip.xianlin.controller.lib;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import xyz.xianlin.exception.BusinessException;
+import vip.xianlin.exception.BusinessException;
 
 @RestControllerAdvice // 异常处理器
 public class ProjectExceptionAdvice {

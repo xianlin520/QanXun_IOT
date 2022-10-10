@@ -5,6 +5,18 @@ public class Result {
     private Object data;
     private String msg;
     
+    public Result(Object data, String msg) {
+        this.code = Code.OK;
+        this.data = data;
+        this.msg = msg;
+    }
+    
+    public Result(Object data){
+        this.code = Code.OK;
+        this.data = data;
+    }
+    
+    
     public Result(Integer code, Object data) {
         this.code = code;
         this.data = data;

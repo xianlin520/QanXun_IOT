@@ -17,6 +17,16 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!--thymeleaf依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- 发送邮件依赖包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!-- lombok可用于类上, 用于省略getter等重复方法(@Data) -->
         <dependency>
             <groupId>org.projectlombok</groupId>

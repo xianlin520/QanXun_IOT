@@ -1,11 +1,10 @@
-package vip.xianlin.lib;
+package vip.xianlin.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,9 +12,8 @@ import java.util.Map;
 // Jwt加密类
 public class JwtUtil {
     // 设置过期时间, 单位毫秒
-    private static final long EXPIRE_TIME = 1440 * 60 * 1000;
-    @Value("${jwt_secret}") // 将配置文件数据注入到SECRET
-    private static String SECRET;   // Jwt私钥(加密解密都需要)
+    private static final long EXPIRE_TIME = 1440 * 60 * 1000; // 24小时
+    private static final String SECRET = "XianLin";   // Jwt私钥(加密解密都需要)
     
     /**
      * 生成jwt字符串，24小时后过期  JWT(json web token)

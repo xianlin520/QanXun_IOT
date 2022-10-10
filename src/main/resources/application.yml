@@ -8,6 +8,18 @@ spring:
   profiles:
     active: dev # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
+  mail:
+    host: smtp.163.com   # 声明邮箱域名
+    port: 465             # 邮箱端口
+    username: 15653674386@163.com    # 邮箱账号
+    password: RBNJGWNAHZSMLRTO   # 邮箱授权码
+    protocol: smtp       # 协议
+    # 发送邮件时采用ssl安全连接
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
 ---
 # 设置dev开发环境
 spring:
