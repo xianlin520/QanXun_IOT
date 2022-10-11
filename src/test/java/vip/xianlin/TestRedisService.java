@@ -12,5 +12,6 @@ public class TestRedisService {
     
     @Test
     void contextLoads() {
+        System.out.println(redisService.getData("11"));
     }
 }

@@ -12,6 +12,6 @@ class QanXunIotApplicationTests {
     
     @Test
     void contextLoads() {
-        emailService.sendEmailVerificationCode("2683971783@qq.com");
+        emailService.sendEmailVerificationCode("26w6w");
     }
 }

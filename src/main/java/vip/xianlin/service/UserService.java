@@ -30,7 +30,10 @@ public class UserService {
         if (retUserData.size() == 0) return null; // 如果未查询到数据, 则返回null
         return retUserData.get(0); // 如果查询到数据, 就返回数据
     }
-    
+    // 根据传入的用户对象, 插入到数据库
+    public void addUserData(UserData userData) {
+        userDao.insert(userData); // 如果数据内有重复数据, 或插入失败则会报错, 表示添加失败
+    }
     
     
 }

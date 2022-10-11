@@ -17,7 +17,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         //excludePathPatterns排除的路径
         String[] excludePathPatterns = {
                 // 排除users路径
-                "/users/**","/error"
+                "/users/**","/error", "/email/**"
         };
         //创建用户拦截器对象并指定其拦截的路径和排除的路径
         registry.addInterceptor(new JwtInterceptor()).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns);

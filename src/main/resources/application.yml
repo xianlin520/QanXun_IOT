@@ -2,8 +2,6 @@ server:
   # 设置服务启动端口
   port: 8888
 
- # 设置Jwt秘钥(慎改)
-jwt_secret: XianLin
 spring:
   profiles:
     active: dev # 选择 开发环境/预设配置

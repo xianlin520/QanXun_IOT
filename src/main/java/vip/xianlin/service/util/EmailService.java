@@ -36,10 +36,13 @@ public class EmailService {
     //设置自定义发件人昵称
     String nick="";
     // 发送电子邮件验证码
-    public void sendEmailVerificationCode(String toAddress) {
+    public Boolean sendEmailVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
         String verifyCode = verificationCodeService.generateVerificationCode();
-        redisService.putData(toAddress, verifyCode); // 往Redis数据内存入 邮箱=>验证码, 时效五分钟
+        boolean flag = redisService.putData(toAddress, verifyCode); // 往Redis数据内存入 邮箱=>验证码, 时效五分钟 //TODO 在邮件验证码服务类里, 存入缓存数据库数据库
+        if (!flag) {
+            return false; // 方法返回false表示存入失败
+        }
         //创建邮件正文
         Context context = new Context();
         context.setVariable("verifyCode", Arrays.asList(verifyCode.split("")));
@@ -48,7 +51,7 @@ public class EmailService {
         String emailContent = templateEngine.process("EmailVerificationCode", context);
         MimeMessage message=mailSender.createMimeMessage();
         try {
-            nick=javax.mail.internet.MimeUtility.encodeText("千寻云"); // 设置发件人昵称
+            nick=javax.mail.internet.MimeUtility.encodeText("千寻云"); //TODO 邮件验证码发件人昵称
             
             //true表示需要创建一个multipart message
             MimeMessageHelper helper=new MimeMessageHelper(message,true);
@@ -56,12 +59,15 @@ public class EmailService {
             helper.setFrom(new InternetAddress(nick+" <"+fromAddress+">"));
             
             helper.setTo(toAddress);
-            helper.setSubject("千寻云-注册验证码");
+            helper.setSubject("千寻云-注册验证码"); //TODO 邮件验证码标题
             helper.setText(emailContent,true);
             mailSender.send(message);
+            return true;
         }catch (Exception e) {
             log.error("邮件验证码发送失败");
             log.error(String.valueOf(e));
+            redisService.delData(toAddress); // 如果发送失败则删除数据库内无效数据
+            return false;
         }
     }
 }

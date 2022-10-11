@@ -1,18 +1,16 @@
 package vip.xianlin.controller.util;
 
 public class Result {
-    private Integer code;
+    private Integer code = Code.OK;
     private Object data;
     private String msg;
     
     public Result(Object data, String msg) {
-        this.code = Code.OK;
         this.data = data;
         this.msg = msg;
     }
     
     public Result(Object data){
-        this.code = Code.OK;
         this.data = data;
     }
     

@@ -3,13 +3,16 @@ package vip.xianlin.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import vip.xianlin.controller.util.Code;
 import vip.xianlin.controller.util.Result;
 import vip.xianlin.domain.UserData;
+import vip.xianlin.service.util.RedisService;
 import vip.xianlin.util.JwtUtil;
 import vip.xianlin.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController // 标记为控制类
@@ -19,7 +22,8 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService; //注入服务类
-    
+    @Autowired
+    private RedisService redisService;
     // 使用Get查询账号是否存在, 存在=>true, 不存在=>false;
     @GetMapping("/{account}")
     public Result queryAccount(@PathVariable String account) {
@@ -42,4 +46,31 @@ public class UserController {
         }
         return new Result((Object) null, "账号或密码错误");
     }
+    
+    // 使用Put添加用户数据, 接收前端指定数据
+    @PutMapping
+    public Result appUserData(@RequestBody Map<String,Object> mapData) {
+        String account = (String) mapData.get("account"); // 提取账号信息
+        String check = (String) mapData.get("check"); // 提取验证码信息
+        // 判断账号信息和验证码信息是否吻合, 否则直接返回
+        if (!Objects.equals(redisService.getData(account), check)) {
+            return new Result("邮箱验证码不正确");
+        }
+        String name = (String) mapData.get("name");
+        String password = (String) mapData.get("password");
+        UserData userData = new UserData(name, account, password);
+        try {
+            userService.addUserData(userData); // 调用用户服务类, 插入数据到数据库
+            return new Result("数据添加成功");
+        } catch (Exception e) {
+            log.error(String.valueOf(e));
+            return new Result(Code.SQLERR, (Object) "数据添加失败");
+        }
+    }
+    
+    @PutMapping("/updata")
+    public Result upUserData() {
+        return new Result("更新数据");
+    }
+    
 }
