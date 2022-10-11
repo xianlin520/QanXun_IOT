@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.io.InputStream;
+
 @Data
 @TableName("t_user")
 public class UserData {
@@ -13,10 +15,15 @@ public class UserData {
     private String name; //  用户昵称
     private String account; // 用户邮箱账号
     private String password;    // 用户密码
+    private String portrait; // 用户头像(base64)
     
-    public UserData(String name, String account, String password) {
+    public UserData(String name, String account, String password, String portrait) {
         this.name = name;
         this.account = account;
         this.password = password;
+        this.portrait = portrait;
+    }
+    
+    public UserData() {
     }
 }
