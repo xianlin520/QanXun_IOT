@@ -17,6 +17,11 @@ public class UserData {
     private String password;    // 用户密码
     private String portrait; // 用户头像(base64)
     
+    public UserData(String account, String password) {
+        this.account = account;
+        this.password = password;
+    }
+    
     public UserData(String name, String account, String password, String portrait) {
         this.name = name;
         this.account = account;

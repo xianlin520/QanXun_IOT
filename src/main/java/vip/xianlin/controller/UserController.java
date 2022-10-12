@@ -10,7 +10,9 @@ import vip.xianlin.domain.UserData;
 import vip.xianlin.service.UserService;
 import vip.xianlin.service.util.RedisService;
 import vip.xianlin.util.JwtUtil;
+import vip.xianlin.util.LogUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,18 +38,25 @@ public class UserController {
     
     // 使用POST查询账号密码是否正确, 正确就返回Token和基本信息
     @PostMapping
-    public Result queryAccountAndPassword(@RequestBody UserData userData) {
-        UserData retUserData = userService.queryAccountAndPassword(userData);   // 传入UserData对象 进行数据查询
+    public Result queryAccountAndPassword(@RequestBody Map<String, Object> mapData, HttpServletRequest request) {
+        String account = (String) mapData.get("account"); // 获取用户数据
+        String password = (String) mapData.get("password"); // 获取用户数据
+        UserData retUserData = userService.queryAccountAndPassword(new UserData(account,password));   // 传入UserData对象 进行数据查询
+        boolean lasting = (Boolean) mapData.get("lasting"); // 获取是否获取持久Token, 如果为true则生成30天Token
         // 如果retUserData不为空, 则表示查询成功
         if (retUserData != null) {
             String uuid = UUID.randomUUID().toString(); // 生成不重复UUID
             Map<String, Object> info = new HashMap<>();
-            info.put("account", retUserData.getAccount());  // 存入账号信息
-            info.put("name", retUserData.getName());    // 存入昵称信息
+//            info.put("account", retUserData.getAccount());  // 存入账号信息
+            info.put("id", retUserData.getId());    // 存入ID信息
+            if (lasting) {
+                String token = JwtUtil.longSign(uuid, info, 1000L * 60 * 60 * 24 * 30); // 过期时间为三十天后
+                return new Result(retUserData, token);    // 账号密码正确, 返回token
+            }
             String token = JwtUtil.sign(uuid, info);    // 存入UUID和info, 生成JWT加密Token
             return new Result(retUserData, token);    // 账号密码正确, 返回token
         }
-        return new Result((Object) null, "账号或密码错误");
+        return new Result(Code.BUSINESS_ERR,null, "账号或密码错误");
     }
     
     // 使用Put添加用户数据, 接收前端指定数据

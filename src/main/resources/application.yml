@@ -18,7 +18,9 @@ spring:
           ssl:
             enable: true     # 发送邮件时采用ssl安全连接
 
-
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启sql日志
 ---
 # 设置dev开发环境
 spring:

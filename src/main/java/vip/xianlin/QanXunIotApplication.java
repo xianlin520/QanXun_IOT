@@ -3,6 +3,9 @@ package vip.xianlin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import vip.xianlin.util.BeanUtil;
+
 @Slf4j
 @SpringBootApplication
 public class QanXunIotApplication {
@@ -14,4 +17,9 @@ public class QanXunIotApplication {
         log.info("===========================");
     }
     
+    // 允许在工具类内调用服务类
+    @Bean
+    public BeanUtil beanUtil() {
+        return new BeanUtil();
+    }
 }

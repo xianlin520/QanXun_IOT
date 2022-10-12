@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component // 设置为Spring的组件
 @Slf4j // 启用日志
 public class JwtInterceptor implements HandlerInterceptor {
+    
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //如果不是映射到方法直接通过
@@ -24,26 +25,28 @@ public class JwtInterceptor implements HandlerInterceptor {
         //从 http 请求头中取出 token
         String token = request.getHeader("Authorization");
         
-        // 获取访问者端口
-        int port = request.getRemotePort();
         // 获取访问者IP
         String ipAddress = request.getRemoteAddr();
         // 获取访问者访问的路径
         String path = request.getRequestURI();
         // 获取访问者访问的方式
         String method = request.getMethod();
+        
+        // 验证token是否是null
         if (token == null) {
             log.info("未携带token，访问被拒，访问路径[{}] 访问方式[{}], IP：{}", path, method, ipAddress);
-            throw new BusinessException(Code.BUSINESS_ERR ,"无 token, 请在请求头内携带Token");
+            throw new BusinessException(Code.BUSINESS_ERR ,"无 Token, 请在请求头内携带Token");
         }
-        if (JwtUtil.checkSign(token)) {
-            log.info("Token验证成功，访问路径[{}] 访问方式[{}], IP：{}", path, method, ipAddress);
-            return true;
-        }else {
+        // 验证token是否合法, 是否过期
+        if (!JwtUtil.checkSign(token)) {
             log.info("Token验证失败，访问被拒，访问路径[{}] 访问方式[{}], IP：{}", path, method, ipAddress);
-            throw new BusinessException(Code.BUSINESS_ERR ,"token, 请重新获取Token");
+            throw new BusinessException(Code.BUSINESS_ERR ,"Token失效, 请重新获取Token");
         }
-//        return true;
+        // 验证token内id信息是否存在
+        if (!JwtUtil.checkSignByToken(token)) {
+            throw new BusinessException(Code.BUSINESS_ERR, "Token已失效, 可能账号信息已更改, 请重新获取Token");
+        }
+        return true;
     }
 }
 

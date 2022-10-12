@@ -9,7 +9,7 @@ public class Code {
     // 异常状态码, 50010表示系统异常, 50020表示业务异常, 未知异常状态码: 50050
     public static final Integer SYSTEM_ERR = 401; // 系统异常代码
     // 业务异常状态码
-    public static final Integer BUSINESS_ERR = 401; // 业务异常代码
+    public static final Integer BUSINESS_ERR = 204; // 业务异常代码
     // 未知异常状态码
     public static final Integer SYSTEM_UNKEOW_ERR = 404;
 }

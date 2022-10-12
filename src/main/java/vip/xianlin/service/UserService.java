@@ -1,7 +1,6 @@
 package vip.xianlin.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vip.xianlin.dao.UserDao;
@@ -13,6 +12,11 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserDao userDao;
+    
+    
+    public UserData queryUserByID(Integer id) {
+        return userDao.selectById(id); // 查询后返回
+    }
     
     // 根据传入的Account账号信息, 查询数据库内数据, 如果账号已存在则返回true, 否则返回false;
     public Boolean queryAccount(String account){
