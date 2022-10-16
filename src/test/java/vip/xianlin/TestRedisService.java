@@ -7,11 +7,9 @@ import vip.xianlin.service.util.RedisService;
 
 @SpringBootTest
 public class TestRedisService {
-    @Autowired
-    RedisService redisService;
+    
     
     @Test
     void contextLoads() {
-        System.out.println(redisService.getData("11"));
     }
 }

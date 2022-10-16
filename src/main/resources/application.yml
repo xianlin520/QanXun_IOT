@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: dev # 选择 开发环境/预设配置
+    active: prod # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
   mail:
     host: smtp.163.com   # 声明邮箱域名
@@ -56,6 +56,18 @@ spring:
     url: jdbc:mysql://172.21.0.16:3306/qanxun_iot?useSSL=false
     username: root
     password: wgw147741QWE
+
+  # 配置Redis数据源
+  redis:
+    host: 127.0.0.1 # 连接地址
+    port: 6379 # 连接端口
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: -1 # 最大阻塞等待时间(-1表示无限制)
+        max-idle: 8 # 最大空闲
+        min-idle: 0 # 最小空闲
+
 logging:
   # 配置LogBack日志框架配文件路径
   config: classpath:logback/prod-logback.xml

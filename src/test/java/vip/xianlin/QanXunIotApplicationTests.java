@@ -7,11 +7,7 @@ import vip.xianlin.service.util.EmailService;
 
 @SpringBootTest
 class QanXunIotApplicationTests {
-    @Autowired
-    private EmailService emailService;
-    
     @Test
     void contextLoads() {
-        emailService.sendEmailVerificationCode("26w6w");
     }
 }
