@@ -40,5 +40,11 @@ public class UserService {
         userDao.insert(userData); // 如果数据内有重复数据, 或插入失败则会报错, 表示添加失败
     }
     
+    // 根据传入的用户id, 和用户对象, 修改数据库信息
+    public boolean updateById(Integer id, UserData userData) {
+        userData.setId(id); // 设置更改用户id
+        int i = userDao.updateById(userData); // 根据用户id和对象内数据更改数据
+        return i != 0; // 如果返回数量大于0则返回true, 否则返回false
+    }
     
 }

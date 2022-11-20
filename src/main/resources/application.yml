@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: prod # 选择 开发环境/预设配置
+    active: dev # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
   mail:
     host: smtp.163.com   # 声明邮箱域名
@@ -59,7 +59,7 @@ spring:
 
   # 配置Redis数据源
   redis:
-    host: 127.0.0.1 # 连接地址
+    host: 192.168.89.10 # 连接地址
     port: 6379 # 连接端口
     jedis:
       pool:
@@ -72,15 +72,50 @@ logging:
   # 配置LogBack日志框架配文件路径
   config: classpath:logback/prod-logback.xml
 ---
+# 设置inside内部环境
+spring:
+  profiles: inside
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    Type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://bj-cynosdbmysql-grp-o8fpl778.sql.tencentcdb.com:29815/qanxun_iot?useSSL=false
+    username: root
+    password: wgw147741QWE
+
+  # 配置Redis数据源
+  redis:
+    host: 192.168.89.10 # 连接地址
+    port: 6379 # 连接端口
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: -1 # 最大阻塞等待时间(-1表示无限制)
+        max-idle: 8 # 最大空闲
+        min-idle: 0 # 最小空闲
+logging:
+  # 配置LogBack日志框架配文件路径
+  config: classpath:logback/dev-logback.xml
+---
 # 设置test生产环境
 spring:
   profiles: test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     Type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://bj-cynosdbmysql-grp-o8fpl778.sql.tencentcdb.com:29815/qnxun_iot?useSSL=false
+    url: jdbc:mysql://bj-cynosdbmysql-grp-o8fpl778.sql.tencentcdb.com:29815/qanxun_iot?useSSL=false
     username: root
     password: wgw147741QWE
+
+  # 配置Redis数据源
+  redis:
+    host: 192.168.89.10 # 连接地址
+    port: 6379 # 连接端口
+    jedis:
+      pool:
+        max-active: 8 # 最大连接数
+        max-wait: -1 # 最大阻塞等待时间(-1表示无限制)
+        max-idle: 8 # 最大空闲
+        min-idle: 0 # 最小空闲
 logging:
   # 配置LogBack日志框架配文件路径
   config: classpath:logback/dev-logback.xml

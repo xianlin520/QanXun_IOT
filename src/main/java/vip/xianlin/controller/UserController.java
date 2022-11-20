@@ -45,6 +45,7 @@ public class UserController {
         boolean lasting = (Boolean) mapData.get("lasting"); // 获取是否获取持久Token, 如果为true则生成30天Token
         // 如果retUserData不为空, 则表示查询成功
         if (retUserData != null) {
+            retUserData.setPassword(""); // 将账号密码设为空字符串
             String uuid = UUID.randomUUID().toString(); // 生成不重复UUID
             Map<String, Object> info = new HashMap<>();
 //            info.put("account", retUserData.getAccount());  // 存入账号信息
@@ -67,7 +68,7 @@ public class UserController {
             String check = (String) mapData.get("check"); // 提取验证码信息
             // 判断账号信息和验证码信息是否吻合, 否则直接返回
             if (!Objects.equals(redisService.getData(account), check)) {
-                return new Result("邮箱验证码不正确");
+                return new Result(Code.SMSCODEERR, (Object) "邮箱验证码不正确");
             }
             String name = (String) mapData.get("name"); // 提取用户昵称
             String password = (String) mapData.get("password"); // 提取用户密码
