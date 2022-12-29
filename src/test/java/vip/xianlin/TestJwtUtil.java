@@ -8,6 +8,5 @@ import vip.xianlin.util.JwtUtil;
 public class TestJwtUtil {
     @Test
     void test() {
-    
     }
 }

@@ -7,8 +7,6 @@ import vip.xianlin.service.util.RedisService;
 
 @SpringBootTest
 public class TestRedisService {
-    
-    
     @Test
     void contextLoads() {
     }
