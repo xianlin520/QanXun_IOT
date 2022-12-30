@@ -55,8 +55,10 @@ public class UserController {
                 return new Result(retUserData, token);    // 账号密码正确, 返回token
             }
             String token = JwtUtil.sign(uuid, info);    // 存入UUID和info, 生成JWT加密Token
+            log.info("用户登录失败, 用户账号:"+account);
             return new Result(retUserData, token);    // 账号密码正确, 返回token
         }
+        log.info("用户登录成功, 用户账号:"+account);
         return new Result(Code.BUSINESS_ERR,null, "账号或密码错误");
     }
     
@@ -75,9 +77,10 @@ public class UserController {
             String portrait = (String) mapData.get("portrait"); // 提取用户头像(base64)
             UserData userData = new UserData(name, account, password, portrait);
             userService.addUserData(userData); // 调用用户服务类, 插入数据到数据库
+            log.info("用户注册成功, 用户账号:"+account);
             return new Result("数据添加成功");
         } catch (Exception e) {
-            log.error(String.valueOf(e));
+            log.info("用户注册失败, 用户账号:"+ mapData.get("account"));
             return new Result(Code.SQLERR, (Object) "数据添加失败");
         }
     }
