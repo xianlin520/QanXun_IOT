@@ -12,6 +12,7 @@ public class QanXunIotApplication {
     
     public static void main(String[] args) {
         SpringApplication.run(QanXunIotApplication.class, args);
+        
         log.info("===========================");
         log.info("SpringBoot项目启动成功");
         log.info("===========================");

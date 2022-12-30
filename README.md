@@ -5,8 +5,11 @@
 > - 主体框架: [Spring Boot 2 ](https://spring.io/projects/spring-boot)
 > - 数据库框架: [Mybatis](https://mybatis.net.cn/) | [Mybatis-Plus](https://baomidou.com)
 > - 日志框架: [Logback(SpringBoot默认框架)](https://logback.qos.ch/)
-> - 部署环境: [Tomcat](https://www.apache.org/tomcat/)
+> - 部署环境: [Tomcat](https://www.apache.org/tomcat/), [Java]()
 
+---
+需要配置环境: MySql, Redis, smtp邮箱授权码
+- 环境配置均在application.yml中配置
 
 --- 
 ### 2022年10月11日 - 完成用户接口

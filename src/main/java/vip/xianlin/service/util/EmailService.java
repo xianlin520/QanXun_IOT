@@ -39,7 +39,7 @@ public class EmailService {
     public Boolean sendEmailVerificationCode(String toAddress) {
         //调用 VerificationCodeService 生产验证码
         String verifyCode = verificationCodeService.generateVerificationCode();
-        boolean flag = redisService.putData(toAddress, verifyCode); // 往Redis数据内存入 邮箱=>验证码, 时效五分钟 //TODO 在邮件验证码服务类里, 存入缓存数据库数据库
+        boolean flag = redisService.putData5min(toAddress, verifyCode); // 往Redis数据内存入 邮箱=>验证码, 时效五分钟 //TODO 在邮件验证码服务类里, 存入缓存数据库数据库
         if (!flag) {
             return false; // 方法返回false表示存入失败
         }
