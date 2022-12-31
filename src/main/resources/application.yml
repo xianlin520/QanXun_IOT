@@ -46,6 +46,7 @@ spring:
 
 logging:
   config: classpath:logback/dev-logback.xml # 配置LogBack日志框架配文件路径
+logPath: "F:/Y_xianlin/java_log"
 ---
 # 设置prod生产环境
 spring:
@@ -71,6 +72,7 @@ spring:
 logging:
   # 配置LogBack日志框架配文件路径
   config: classpath:logback/prod-logback.xml
+logPath: "/log"
 ---
 # 设置inside内部环境
 spring:
