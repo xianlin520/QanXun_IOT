@@ -35,10 +35,14 @@
         </triggeringPolicy>
     </appender>
 
+    <!-- 限制输出到文本的日志 -->
+    <logger name="vip.xianlin" level="INFO">
+        <appender-ref ref="file"/>
+    </logger>
+
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="console"/>
-        <appender-ref ref="file"/>
     </root>
 
 </configuration>
