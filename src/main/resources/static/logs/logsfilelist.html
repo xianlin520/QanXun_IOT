@@ -225,6 +225,7 @@
     let dates = [];
     let btns = [];
     let data = JSON.parse(localStorage.getItem("path"));
+    if (data===null)window.location.reload();
     console.log(data)
     data.forEach(item => {
       let date = item.split('-')[1] + '-' + item.split('-')[2] + '-' + item.split('-')[3].split('.')[0];
