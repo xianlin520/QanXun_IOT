@@ -25,21 +25,13 @@ public class JwtInterceptor implements HandlerInterceptor {
         //从 http 请求头中取出 token
         String token = request.getHeader("Authorization");
         
-        // 获取访问者IP
-        String ipAddress = request.getRemoteAddr();
-        // 获取访问者访问的路径
-        String path = request.getRequestURI();
-        
-        log.info("发现访问, IP：{}, 访问路径[{}],  ", ipAddress, path);
         
         // 验证token是否是null
         if (token == null) {
-            log.info("未携带token，访问被拒，IP：{}, 访问路径[{}],  ", ipAddress, path);
             throw new BusinessException(Code.BUSINESS_ERR ,"无Token, 请在请求头内携带Token");
         }
         // 验证token是否合法, 是否过期
         if (!JwtUtil.checkSign(token)) {
-            log.info("Token验证失败，访问被拒，IP：{}, 访问路径[{}],  ", ipAddress, path);
             throw new BusinessException(Code.BUSINESS_ERR ,"Token失效, 请重新获取Token");
         }
         // 验证token内id信息是否存在

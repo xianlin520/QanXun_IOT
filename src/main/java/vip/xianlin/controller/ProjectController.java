@@ -37,7 +37,6 @@ public class ProjectController {
             List<ProjectData> projectDataList = projectService.addProjectData(projectData); // 存入数据库, 并查询返回用户名下所有项目
             return new Result(projectDataList); // 返回数据
         } catch (Exception e) {
-            log.error(String.valueOf(e));
             return new Result(Code.SQLERR, (Object) "数据插入失败");
         }
     }

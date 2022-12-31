@@ -55,10 +55,10 @@ public class UserController {
                 return new Result(retUserData, token);    // 账号密码正确, 返回token
             }
             String token = JwtUtil.sign(uuid, info);    // 存入UUID和info, 生成JWT加密Token
-            log.info("用户登录失败, 用户账号:"+account);
+            log.info("用户登录成功, 用户账号:"+account);
             return new Result(retUserData, token);    // 账号密码正确, 返回token
         }
-        log.info("用户登录成功, 用户账号:"+account);
+        log.info("用户登录失败, 用户账号:"+account);
         return new Result(Code.BUSINESS_ERR,null, "账号或密码错误");
     }
     
