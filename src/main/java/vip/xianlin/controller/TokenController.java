@@ -70,7 +70,7 @@ public class TokenController {
     }
     
     @GetMapping("/logs")
-    public RedirectView getLogsHtml() {
+    public RedirectView getLogsHtml(RedirectAttributes attributes) {
         return new RedirectView("/logs/logsfilelist.html");
     }
 }

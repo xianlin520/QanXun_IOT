@@ -206,15 +206,26 @@
 </style>
 <head>
   <script type="text/javascript">
-    let data = [
-      "F:\\Y_xianlin\\java_log\\LogBack-2021-5-30.log",
-      "F:\\Y_xianlin\\java_log\\LogBack-2022-12-30.log",
-      "F:\\Y_xianlin\\java_log\\LogBack-2022-12-31.log"
-    ]
+    // 向后端发送请求
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/token/getlogsfilelist/', true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+        let ret = JSON.parse(xhr.responseText);
+        localStorage.setItem("path", JSON.stringify(ret.data))
+      }
+    };
+    xhr.send(null);
+    // let data = [
+    //   "F:\\Y_xianlin\\java_log\\LogBack-2021-5-30.log",
+    //   "F:\\Y_xianlin\\java_log\\LogBack-2022-12-30.log",
+    //   "F:\\Y_xianlin\\java_log\\LogBack-2022-12-31.log"
+    // ]
 
     let dates = [];
     let btns = [];
-
+    let data = JSON.parse(localStorage.getItem("path"));
+    console.log(data)
     data.forEach(item => {
       let date = item.split('-')[1] + '-' + item.split('-')[2] + '-' + item.split('-')[3].split('.')[0];
       dates.push(date);
