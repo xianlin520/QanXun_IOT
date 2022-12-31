@@ -35,6 +35,7 @@
         </triggeringPolicy>
     </appender>
 
+
     <!-- 限制输出到文本的日志 -->
     <logger name="vip.xianlin" level="INFO">
         <appender-ref ref="file"/>
