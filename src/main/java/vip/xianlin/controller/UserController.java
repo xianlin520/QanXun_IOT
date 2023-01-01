@@ -3,17 +3,14 @@ package vip.xianlin.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import vip.xianlin.controller.util.Code;
 import vip.xianlin.controller.util.Result;
 import vip.xianlin.domain.UserData;
 import vip.xianlin.service.UserService;
 import vip.xianlin.service.util.RedisService;
 import vip.xianlin.util.JwtUtil;
-import vip.xianlin.util.LogUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import vip.xianlin.controller.util.Code;
+import vip.xianlin.exception.SystemException;
 import vip.xianlin.service.VerificationCodeService;
 
 import javax.mail.internet.InternetAddress;
@@ -64,8 +66,7 @@ public class EmailService {
             mailSender.send(message);
             return true;
         }catch (Exception e) {
-            log.error("邮件验证码发送失败");
-            log.error(String.valueOf(e));
+            log.error("邮件验证码发送失败, 收件人:"+toAddress);
             redisService.delData(toAddress); // 如果发送失败则删除数据库内无效数据
             return false;
         }
