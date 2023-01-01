@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.*;
 import vip.xianlin.controller.util.Code;
 import vip.xianlin.controller.util.Result;
 import vip.xianlin.domain.ArticleData;
+import vip.xianlin.domain.ArticleUserData;
+import vip.xianlin.domain.UserData;
 import vip.xianlin.service.ArticleService;
+import vip.xianlin.service.UserService;
 import vip.xianlin.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Objects;
 
 @RestController // 标记为控制类
@@ -21,10 +25,31 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
     
-    @GetMapping("/{id}")
+    @Autowired
+    UserService userService;
+    
+    @GetMapping("/list/{id}")
+    public Result getUserArticleList(@PathVariable Integer id) {
+        List<ArticleData> articleDataList = articleService.queryArticleListByUserID(id);
+        return new Result(articleDataList);
+    }
+    
+    @GetMapping("/read/{id}")
     public Result getArticle(@PathVariable Integer id) {
         ArticleData articleData = articleService.queryByID(id);
-        return new Result(articleData);
+        UserData userData = userService.queryUserByID(articleData.getUserKey());
+        userData.setPassword("");
+//        articleData.setUserData(userData);
+        ArticleUserData articleUserData = new ArticleUserData(articleData, userData);
+        return new Result(articleUserData);
+    }
+    
+    @PostMapping("/admin")
+    public Result adminSetArticleInfo(@RequestBody ArticleData articleData, HttpServletRequest res) {
+        Integer userId = (Integer) Objects.requireNonNull(JwtUtil.getInfo(res.getHeader("Authorization"))).get("id"); // 取出请求头内Token, 并获取id
+        if (userId != 1) return new Result(Code.SQLERR, (Object) "权限不足");
+        boolean b = articleService.setData(articleData);
+        return new Result(b);
     }
     
     @PutMapping
