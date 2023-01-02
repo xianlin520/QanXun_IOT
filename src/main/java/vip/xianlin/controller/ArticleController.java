@@ -1,5 +1,6 @@
 package vip.xianlin.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class ArticleController {
         userArticleData.setUserId(userId);
         try {
             articleService.addUserArticleData(userArticleData);
+            log.info("文章收藏数据更新成功"+userArticleData);
             return new Result("成功");
         } catch (Exception e) {
             log.info("文章收藏添加失败"+userArticleData);
@@ -46,6 +48,19 @@ public class ArticleController {
     public Result getUserArticleList(@PathVariable Integer id) {
         List<ArticleData> articleDataList = articleService.queryArticleListByUserID(id);
         return new Result(articleDataList);
+    }
+    
+    /**
+     * 分页查询项目信息
+     *
+     * @param pageNum 当前页
+     * @param pageSize 每页数量
+     * @return
+     */
+    @GetMapping("/read/page/{pageSize}/{pageNum}")
+    public Result queryArticleDataByPage(@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+        IPage<ArticleData> articleDataIPage = articleService.queryArticleDataByPage(pageNum, pageSize);
+        return new Result(articleDataIPage);
     }
     
     @GetMapping("/read/{id}")
@@ -70,12 +85,14 @@ public class ArticleController {
         String content = articleData.getContent();
         String cover = articleData.getCover();
         if (title == null || category == null || content == null||cover==null) {
+            log.info("文章添加失败, 数据不全");
             return new Result(Code.BUSINESS_ERR, (Object) "信息不全");
         }
         String userId = Objects.requireNonNull(JwtUtil.getInfo(res.getHeader("Authorization"))).get("id").toString(); // 取出请求头内Token, 并获取id
         ArticleData putData = new ArticleData(title, cover, category, content);
         putData.setUserKey(Integer.valueOf(userId)); // 将取出的userId转为int整形, 存入UserKey做项目外键
         articleService.addData(putData);
+        log.info("文章添加成功");
         return new Result(Code.OK);
     }
     

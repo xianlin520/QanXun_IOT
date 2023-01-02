@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vip.xianlin.dao.ArticleDao;
@@ -23,6 +25,15 @@ public class ArticleService {
     
     @Autowired
     private UserArticleDao userArticleDao;
+    
+    // 分页查询
+    public IPage<ArticleData> queryArticleDataByPage(Integer pageNum, Integer pageSize) {
+        Page<ArticleData> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<ArticleData> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.select(ArticleData::getId, ArticleData::getTitle, ArticleData::getPublishTime, ArticleData::getCategory, ArticleData::getCover, ArticleData::getTitleTag, ArticleData::getIsRecommend, ArticleData::getViewCount, ArticleData::getLikeCount, ArticleData::getCollectCount, ArticleData::getUserKey);
+        // 使用mybatisPlus的分页查询
+        return articleDao.selectPage(page, lambdaQueryWrapper);
+    }
     
     // 文章信息和对应的作者信息, 并一起返回
     public List<Map<String, Object>> queryArticleAndUserByID(Integer id) {
@@ -55,9 +66,11 @@ public class ArticleService {
             if (userArticleData.getLikeCount()!=null)updateWrapper.set(UserArticleData::getLikeCount, userArticleData.getLikeCount());
             if (userArticleData.getCollectCount()!=null)updateWrapper.set(UserArticleData::getCollectCount, userArticleData.getCollectCount());
             userArticleDao.update(null, updateWrapper);
+            articleDao.upDataArticleLike(count.get(0).getArticleId());
         } else {
             // 不存在，新增
             userArticleDao.insert(userArticleData);
+            articleDao.upDataArticleLike(count.get(0).getArticleId());
         }
     }
     
