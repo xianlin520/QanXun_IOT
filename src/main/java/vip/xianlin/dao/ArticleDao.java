@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Mapper
 public interface ArticleDao extends BaseMapper<ArticleData> {
-    
+    // 此接口会查询文章信息和对应的作者信息, 并一起返回
     @Select("SELECT\n" +
             "    a.id AS article_id,\n" +
             "    a.title,\n" +
@@ -35,6 +35,15 @@ public interface ArticleDao extends BaseMapper<ArticleData> {
             "WHERE\n" +
             "    a.id = #{id}\n")
     List<Map<String, Object>> queryArticleAndUserByID(@PathParam("id") Integer id);
+    
+    // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
+    @Update("UPDATE t_article a, \n" +
+            "(SELECT SUM(like_count) as like_count, SUM(collect_count) as collect_count \n" +
+            "FROM t_user_article \n" +
+            "WHERE article_id = #{id}) b \n" +
+            "SET a.like_count = b.like_count, a.collect_count = b.collect_count \n" +
+            "WHERE a.id = #{id};")
+    void upDataArticleLike(@PathParam("id") Integer id);
     
     // 此接口用于将阅读列自增1
     @Update("UPDATE t_article SET t_article.view_count = t_article.view_count + 1 WHERE t_article.id = #{id}")

@@ -50,6 +50,7 @@ public class ArticleController {
     
     @GetMapping("/read/{id}")
     public Result getArticle(@PathVariable Integer id) {
+        articleService.upDataArticleLike(id);
         List<Map<String, Object>> articleUserData = articleService.queryArticleAndUserByID(id);
         return new Result(articleUserData.get(0));
     }
