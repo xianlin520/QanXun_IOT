@@ -44,6 +44,8 @@ public class ArticleController {
         }
     }
     
+    
+    
     @GetMapping("/list/{id}")
     public Result getUserArticleList(@PathVariable Integer id) {
         List<ArticleData> articleDataList = articleService.queryArticleListByUserID(id);
@@ -68,6 +70,12 @@ public class ArticleController {
         articleService.upDataArticleLike(id);
         List<Map<String, Object>> articleUserData = articleService.queryArticleAndUserByID(id);
         return new Result(articleUserData.get(0));
+    }
+    
+    @GetMapping("/read/fuzzy/{data}/{pageNum}")
+    public Result fuzzyQueryArticlePage(@PathVariable String data, @PathVariable Integer pageNum) {
+        IPage<ArticleData> articleDataList = articleService.fuzzyQueryArticlePage(data, pageNum);
+        return new Result(articleDataList);
     }
     
     @PostMapping("/admin")

@@ -3,9 +3,7 @@ package vip.xianlin.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,6 @@ import vip.xianlin.dao.ArticleDao;
 import vip.xianlin.dao.UserArticleDao;
 import vip.xianlin.domain.ArticleData;
 import vip.xianlin.domain.UserArticleData;
-import vip.xianlin.domain.UserData;
 
 import java.util.List;
 import java.util.Map;
@@ -35,11 +32,20 @@ public class ArticleService {
         return articleDao.selectPage(page, lambdaQueryWrapper);
     }
     
+    // 模糊分页查询
+    public IPage<ArticleData> fuzzyQueryArticlePage(String data, Integer pageNum) {
+        Page<ArticleData> page = new Page<>(pageNum, 5); // 当前页码为 1，每页大小为 10
+        return articleDao.selectPage(page,
+                new QueryWrapper<ArticleData>().lambda()
+                        .like(ArticleData::getTitle, data));
+    }
+    
     // 文章信息和对应的作者信息, 并一起返回
     public List<Map<String, Object>> queryArticleAndUserByID(Integer id) {
         articleDao.addViewCount(id);
         return articleDao.queryArticleAndUserByID(id);
     }
+    
     // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
     public void upDataArticleLike(Integer id) {
         articleDao.upDataArticleLike(id);
@@ -49,9 +55,9 @@ public class ArticleService {
     public List<ArticleData> queryArticleListByUserID(int id) {
         LambdaQueryWrapper<ArticleData> queryUser = new LambdaQueryWrapper<>();    // 创建查询封装类, 并指定数据类
         queryUser.eq(ArticleData::getId, id);   // 传入查询列和查询数据
-        List<ArticleData> articleDataList =articleDao.selectList(queryUser); // 查询数据库, 并接收返回数据
-        return articleDataList;
+        return articleDao.selectList(queryUser);
     }
+    
     // 新增喜欢/收藏信息
     public void addUserArticleData(UserArticleData userArticleData) {
         // 判断某列数据是否存在
@@ -59,12 +65,14 @@ public class ArticleService {
         queryWrapper.eq(UserArticleData::getUserId, userArticleData.getUserId());
         queryWrapper.eq(UserArticleData::getArticleId, userArticleData.getArticleId());
         List<UserArticleData> count = userArticleDao.selectList(queryWrapper);
-        if (count.size()!=0) {
+        if (count.size() != 0) {
             // 存在，更改
             LambdaUpdateWrapper<UserArticleData> updateWrapper = new LambdaUpdateWrapper<>();
             updateWrapper.eq(UserArticleData::getId, count.get(0).getId());
-            if (userArticleData.getLikeCount()!=null)updateWrapper.set(UserArticleData::getLikeCount, userArticleData.getLikeCount());
-            if (userArticleData.getCollectCount()!=null)updateWrapper.set(UserArticleData::getCollectCount, userArticleData.getCollectCount());
+            if (userArticleData.getLikeCount() != null)
+                updateWrapper.set(UserArticleData::getLikeCount, userArticleData.getLikeCount());
+            if (userArticleData.getCollectCount() != null)
+                updateWrapper.set(UserArticleData::getCollectCount, userArticleData.getCollectCount());
             userArticleDao.update(null, updateWrapper);
             articleDao.upDataArticleLike(count.get(0).getArticleId());
         } else {
@@ -73,8 +81,6 @@ public class ArticleService {
             articleDao.upDataArticleLike(count.get(0).getArticleId());
         }
     }
-    
-  
     
     
     public boolean setData(ArticleData articleData) {

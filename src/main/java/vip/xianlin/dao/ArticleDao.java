@@ -1,6 +1,7 @@
 package vip.xianlin.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -36,6 +37,11 @@ public interface ArticleDao extends BaseMapper<ArticleData> {
             "WHERE\n" +
             "    a.id = #{id}\n")
     List<Map<String, Object>> queryArticleAndUserByID(@PathParam("id") Integer id);
+    
+    // 此接口会对文章数据进行模糊查询
+    @Select("SELECT * FROM t_article WHERE title LIKE concat('%',#{queryString},'%')")
+    IPage<ArticleData> selectArticlesByTitle(IPage<ArticleData> page, String queryString);
+    
     
     // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
     @Update("UPDATE t_article a, \n" +
