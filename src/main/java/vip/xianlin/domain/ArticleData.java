@@ -25,6 +25,9 @@ public class ArticleData {
     private Integer userKey; // 用户id !
     private String content; // 文章内容 *
     
+    public ArticleData() {
+    }
+    
     public ArticleData(String title, String cover, String category, String content) {
         this.title = title;
         this.cover = cover;

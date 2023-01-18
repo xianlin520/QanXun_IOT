@@ -1,7 +1,11 @@
 package vip.xianlin.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONPOJOBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import vip.xianlin.controller.util.Code;
@@ -10,8 +14,11 @@ import vip.xianlin.domain.ArticleData;
 import vip.xianlin.domain.UserArticleData;
 import vip.xianlin.domain.UserData;
 import vip.xianlin.service.ArticleService;
+import vip.xianlin.service.UserArticleService;
 import vip.xianlin.service.UserService;
 import vip.xianlin.util.JwtUtil;
+import vip.xianlin.vo.ArticleDataVo;
+import vip.xianlin.vo.UserDataVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -30,6 +37,13 @@ public class ArticleController {
     @Autowired
     UserService userService;
     
+    @Autowired
+    UserArticleService userArticleService;
+    
+    /**
+     * 传入用户收藏信息, 更新用户收藏信息
+     * @return 返回更新结果
+     */
     @PutMapping("/upuserarticle")
     public Result upUserArticleData(@RequestBody UserArticleData userArticleData, HttpServletRequest res) {
         Integer userId = (Integer) Objects.requireNonNull(JwtUtil.getInfo(res.getHeader("Authorization"))).get("id"); // 取出请求头内Token, 并获取id
@@ -54,10 +68,9 @@ public class ArticleController {
     
     /**
      * 分页查询项目信息
-     *
      * @param pageNum 当前页
      * @param pageSize 每页数量
-     * @return
+     * @return 返回查询结果
      */
     @GetMapping("/read/page/{pageSize}/{pageNum}")
     public Result queryArticleDataByPage(@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
@@ -65,11 +78,51 @@ public class ArticleController {
         return new Result(articleDataIPage);
     }
     
-    @GetMapping("/read/{id}")
-    public Result getArticle(@PathVariable Integer id) {
+    /**
+     * 传入文章ID, 获取文章信息
+     * @return 返回结果
+     */
+    @GetMapping("/article/{id}")
+    public Result getArticle(@PathVariable Integer id, HttpServletRequest res) {
         articleService.upDataArticleLike(id);
-        List<Map<String, Object>> articleUserData = articleService.queryArticleAndUserByID(id);
-        return new Result(articleUserData.get(0));
+        Integer userId = Integer.valueOf(Objects.requireNonNull(JwtUtil.getInfo(res.getHeader("Authorization"))).get("id").toString()); // 取出请求头内Token, 并获取id
+        ArticleData articleData = articleService.queryByID(id);
+        UserData userData = userService.queryUserByID(articleData.getUserKey());
+        UserArticleData userArticleData = userArticleService.selectById(id, userId);
+        
+        UserDataVo userDataVo = new UserDataVo();
+        BeanUtils.copyProperties(userData, userDataVo);
+        
+        ArticleDataVo articleDataVo = new ArticleDataVo(articleData, userDataVo, userArticleData);
+        return new Result(articleDataVo);
+//        List<JSONObject> articleUserData = articleService.queryArticleAndUserByID(id);
+//        ArticleData articleData = articleService.queryArticleByID(id);
+//        return new Result(articleUserData.get(0));
+    }
+    
+    /**
+     * 传入文章id, 获取文章信息, 作者信息, 用户收藏信息
+     * 如果用户未登录, 则返回用户收藏信息为null
+     * @return 返回结果
+     */
+    @GetMapping("/read/{id}")
+    public Result getArticleData(@PathVariable Integer id, HttpServletRequest res) {
+        articleService.upDataArticleLike(id);
+        // 取出请求头内Token, 用于判断是否登录
+        String authorization = res.getHeader("Authorization");
+        Integer userId = null;
+        if (authorization != null) {
+            userId = Integer.valueOf(Objects.requireNonNull(JwtUtil.getInfo(authorization)).get("id").toString()); // 取出请求头内Token, 并获取id
+        }
+        // 进行数据库查询
+        ArticleData articleData = articleService.queryByID(id);
+        UserData userData = userService.queryUserByID(articleData.getUserKey());
+        
+        UserDataVo userDataVo = new UserDataVo();
+        UserArticleData userArticleData = userArticleService.selectById(id, userId);
+        BeanUtils.copyProperties(userData, userDataVo);
+        ArticleDataVo articleDataVo = new ArticleDataVo(articleData, userDataVo, userArticleData);
+        return new Result(articleDataVo);
     }
     
     @GetMapping("/read/fuzzy/{data}/{pageNum}")

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 给返回类型文件对象的类文件设置别名 -->
+    <typeAliases>
+        <!--数据类文件夹别名路径-->
+        <package name="vip.xianlin.domain"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 数据库连接信息-->
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <!--数据库连接地址及参数, 默认本地数据库地址127.0.0.1:3306-->
+                <property name="url" value="jdbc:mysql://localhost:3306/QanXun_IOT?useSSL=false"/>
+                <!--数据库连接用户账户-->
+                <property name="username" value="root"/>
+                <!--数据库连接用户密码-->
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!--加载SQL的映射文件目录, 项目.mapper-->
+        <package name="vip.xianlin.dao"/>
+    </mappers>
+</configuration>

@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: prod # 选择 开发环境/预设配置
+    active: dev # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
   mail:
     host: smtp.163.com   # 声明邮箱域名
@@ -42,11 +42,18 @@ spring:
         max-wait: -1 # 最大阻塞等待时间(-1表示无限制)
         max-idle: 8 # 最大空闲
         min-idle: 0 # 最小空闲
-
-
+#   开启MybatisPlus数据库操作日志
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
+  level:
+    com.baomidou.mybatisplus: debug
   config: classpath:logback/dev-logback.xml # 配置LogBack日志框架配文件路径
 logPath: "F:/Y_xianlin/java_log"
+mybatis:
+  config-location: classpath:mybatis-config-dev.xml # 配置Mybatis配置文件路径
+  mapper-locations: classpath:mapper/*Dao.xml # 配置Mybatis映射文件路径
 ---
 # 设置prod生产环境
 spring:

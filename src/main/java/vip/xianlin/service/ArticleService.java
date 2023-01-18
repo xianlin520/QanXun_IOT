@@ -32,7 +32,12 @@ public class ArticleService {
         return articleDao.selectPage(page, lambdaQueryWrapper);
     }
     
-    // 模糊分页查询
+    /**
+     * 查询指定字符串的文章, 并分页
+     * @param data 查询字符串
+     * @param pageNum 当前页
+     * @return 返回查询结果
+     */
     public IPage<ArticleData> fuzzyQueryArticlePage(String data, Integer pageNum) {
         Page<ArticleData> page = new Page<>(pageNum, 5); // 当前页码为 1，每页大小为 10
         return articleDao.selectPage(page,
@@ -40,15 +45,23 @@ public class ArticleService {
                         .like(ArticleData::getTitle, data));
     }
     
-    // 文章信息和对应的作者信息, 并一起返回
+    /*// 文章信息和对应的作者信息, 并一起返回
     public List<Map<String, Object>> queryArticleAndUserByID(Integer id) {
-        articleDao.addViewCount(id);
         return articleDao.queryArticleAndUserByID(id);
-    }
+    }*/
     
     // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
+    /**
+     * 更新指定文章的喜欢数和收藏数
+     * @param id 文章id
+     */
     public void upDataArticleLike(Integer id) {
-        articleDao.upDataArticleLike(id);
+        articleDao.addViewCount(id); // 阅读数+1
+        try {
+            articleDao.upDataArticleLike(id);
+        } catch (Exception e) {
+//            throw new RuntimeException(e);
+        }
     }
     
     // 作者的所有文章
