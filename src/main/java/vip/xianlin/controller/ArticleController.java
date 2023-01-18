@@ -108,19 +108,26 @@ public class ArticleController {
     @GetMapping("/read/{id}")
     public Result getArticleData(@PathVariable Integer id, HttpServletRequest res) {
         articleService.upDataArticleLike(id);
+        
+        // 进行数据库查询
+        ArticleData articleData = articleService.queryByID(id);
+        if (articleData==null) {
+            return new Result(Code.ERR, (Object) "无此文章");
+        }
+        UserData userData = userService.queryUserByID(articleData.getUserKey());
+    
         // 取出请求头内Token, 用于判断是否登录
         String authorization = res.getHeader("Authorization");
         Integer userId = null;
         if (authorization != null) {
             userId = Integer.valueOf(Objects.requireNonNull(JwtUtil.getInfo(authorization)).get("id").toString()); // 取出请求头内Token, 并获取id
         }
-        // 进行数据库查询
-        ArticleData articleData = articleService.queryByID(id);
-        UserData userData = userService.queryUserByID(articleData.getUserKey());
         
+        // 查询用户收藏信息, 如果用户未登录, 则返回用户收藏信息为null
         UserDataVo userDataVo = new UserDataVo();
         UserArticleData userArticleData = userArticleService.selectById(id, userId);
         BeanUtils.copyProperties(userData, userDataVo);
+        // 将查询信息封装到Vo中
         ArticleDataVo articleDataVo = new ArticleDataVo(articleData, userDataVo, userArticleData);
         return new Result(articleDataVo);
     }
