@@ -1,8 +1,5 @@
 package vip.xianlin.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONPOJOBuilder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController // 标记为控制类
 @CrossOrigin // 解决跨域问题
@@ -101,35 +99,27 @@ public class ArticleController {
     }
     
     /**
-     * 传入文章id, 获取文章信息, 作者信息, 用户收藏信息
+     * 传入文章id, 返回文章信息, 作者信息, 用户收藏信息
      * 如果用户未登录, 则返回用户收藏信息为null
-     * @return 返回结果
+     * @param id 文章id
+     * @param res 请求头
+     * @return 返回文章信息, 作者信息, 用户收藏信息
      */
     @GetMapping("/read/{id}")
     public Result getArticleData(@PathVariable Integer id, HttpServletRequest res) {
-        articleService.upDataArticleLike(id);
-        
-        // 进行数据库查询
-        ArticleData articleData = articleService.queryByID(id);
-        if (articleData==null) {
-            return new Result(Code.ERR, (Object) "无此文章");
-        }
-        UserData userData = userService.queryUserByID(articleData.getUserKey());
-    
         // 取出请求头内Token, 用于判断是否登录
-        String authorization = res.getHeader("Authorization");
-        Integer userId = null;
-        if (authorization != null) {
-            userId = Integer.valueOf(Objects.requireNonNull(JwtUtil.getInfo(authorization)).get("id").toString()); // 取出请求头内Token, 并获取id
+        Integer userId = Optional.ofNullable(res.getHeader("Authorization")) // 判断请求头是否存在Authorization, 并取出, 转换为Optional<String>
+                .map(JwtUtil::getInfo)// 取出请求头内Token, 并解析为Map<String, Object>
+                .map(info -> info.get("id"))// 取出Map内id(Object)
+                .map(Object::toString)// 转换为String
+                .map(Integer::valueOf)// 转换为Integer
+                .orElse(null);// 以上任何一步为空, 则返回null
+        // 查询文章信息
+        ArticleDataVo articleData = articleService.getArticleData(id, userId);
+        if (articleData == null) {
+            return new Result(Code.NULL, "文章不存在");
         }
-        
-        // 查询用户收藏信息, 如果用户未登录, 则返回用户收藏信息为null
-        UserDataVo userDataVo = new UserDataVo();
-        UserArticleData userArticleData = userArticleService.selectById(id, userId);
-        BeanUtils.copyProperties(userData, userDataVo);
-        // 将查询信息封装到Vo中
-        ArticleDataVo articleDataVo = new ArticleDataVo(articleData, userDataVo, userArticleData);
-        return new Result(articleDataVo);
+        return new Result(articleData);
     }
     
     @GetMapping("/read/fuzzy/{data}/{pageNum}")
