@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: prod # 选择 开发环境/预设配置
+    active: ins # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
   mail:
     host: smtp.163.com   # 声明邮箱域名
@@ -83,7 +83,7 @@ logPath: "/log"
 ---
 # 设置inside内部环境
 spring:
-  profiles: inside
+  profiles: ins
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     Type: com.alibaba.druid.pool.DruidDataSource
@@ -93,7 +93,7 @@ spring:
 
   # 配置Redis数据源
   redis:
-    host: 192.168.89.10 # 连接地址
+    host: 127.0.0.1 # 连接地址
     port: 6379 # 连接端口
     jedis:
       pool:
