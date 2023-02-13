@@ -93,7 +93,7 @@ spring:
 
   # 配置Redis数据源
   redis:
-    host: 127.0.0.1 # 连接地址
+    host: 192.168.89.37 # 连接地址
     port: 6379 # 连接端口
     jedis:
       pool:
