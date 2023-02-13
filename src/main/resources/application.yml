@@ -104,6 +104,7 @@ spring:
 logging:
   # 配置LogBack日志框架配文件路径
   config: classpath:logback/prod-logback.xml
+logPath: "/log"
 ---
 # 设置test生产环境
 spring:
