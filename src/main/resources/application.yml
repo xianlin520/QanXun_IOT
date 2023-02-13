@@ -103,7 +103,7 @@ spring:
         min-idle: 0 # 最小空闲
 logging:
   # 配置LogBack日志框架配文件路径
-  config: classpath:logback/dev-logback.xml
+  config: classpath:logback/prod-logback.xml
 ---
 # 设置test生产环境
 spring:
