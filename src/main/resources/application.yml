@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: dev # 选择 开发环境/预设配置
+    active: ins # 选择 开发环境/预设配置
   # MailProperties 邮箱设置
   mail:
     host: smtp.163.com   # 声明邮箱域名
