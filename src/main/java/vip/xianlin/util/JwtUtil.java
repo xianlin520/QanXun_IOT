@@ -8,8 +8,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import vip.xianlin.domain.UserData;
 import vip.xianlin.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 // Jwt加密类
 public class JwtUtil {
@@ -18,10 +20,28 @@ public class JwtUtil {
     private static final String SECRET = "XianLin";   // Jwt私钥(加密解密都需要)
     
     
-    
-    
+    /**
+     * 根据请求头内的Token, 获取Token内的用户ID
+     * @param res 传入请求头
+     * @return 返回用户ID(userID)
+     */
+    public static Integer getIdFormRes(HttpServletRequest res) {
+        // 取出请求头内Token, 用于判断是否登录
+        return Optional.ofNullable(res.getHeader("Authorization")) // 判断请求头是否存在Authorization, 并取出, 转换为Optional<String>
+                .map(JwtUtil::getInfo)// 取出请求头内Token, 并解析为Map<String, Object>
+                .map(info -> info.get("id"))// 取出Map内id(Object)
+                .map(Object::toString)// 转换为String
+                .map(Integer::valueOf)// 转换为Integer
+                .orElse(null);
+    }
     
     // 传入Token, 根据Token内的信息去数据库内查询, 如果查询到就返回true, 否则返回false
+    
+    /**
+     * 传入token, 根据token中的用户id, 查询数据库
+     * @param token 传入token
+     * @return 返回查询结果(是否存在)
+     */
     public static boolean checkSignByToken(String token) {
         try {
             Map<String, Object> userInfo = getInfo(token);
