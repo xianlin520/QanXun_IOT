@@ -3,18 +3,13 @@ package vip.xianlin.dao;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import vip.xianlin.domain.ArticleData;
-import vip.xianlin.domain.ProjectData;
-import vip.xianlin.vo.ArticleDataVo;
 
 import javax.websocket.server.PathParam;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface ArticleDao extends BaseMapper<ArticleData> {
