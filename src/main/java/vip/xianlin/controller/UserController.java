@@ -38,7 +38,7 @@ public class UserController {
     public Result queryAccountAndPassword(@RequestBody Map<String, Object> mapData, HttpServletRequest request) {
         String account = (String) mapData.get("account"); // 获取用户数据
         String password = (String) mapData.get("password"); // 获取用户数据
-        UserData retUserData = userService.queryAccountAndPassword(new UserData(account,password));   // 传入UserData对象 进行数据查询
+        UserData retUserData = userService.queryAccountAndPassword(new UserData(account, password));   // 传入UserData对象 进行数据查询
         boolean lasting = (Boolean) mapData.get("lasting"); // 获取是否获取持久Token, 如果为true则生成30天Token
         // 如果retUserData不为空, 则表示查询成功
         if (retUserData != null) {
@@ -52,11 +52,11 @@ public class UserController {
                 return new Result(retUserData, token);    // 账号密码正确, 返回token
             }
             String token = JwtUtil.sign(uuid, info);    // 存入UUID和info, 生成JWT加密Token
-            log.info("用户登录成功, 用户账号:"+account);
+            log.info("用户登录成功, 用户账号:" + account);
             return new Result(retUserData, token);    // 账号密码正确, 返回token
         }
-        log.info("用户登录失败, 用户账号:"+account);
-        return new Result(Code.BUSINESS_ERR,null, "账号或密码错误");
+        log.info("用户登录失败, 用户账号:" + account);
+        return new Result(Code.BUSINESS_ERR, null, "账号或密码错误");
     }
     
     // 使用Put添加用户数据, 接收前端指定数据
@@ -74,10 +74,10 @@ public class UserController {
             String portrait = (String) mapData.get("portrait"); // 提取用户头像(base64)
             UserData userData = new UserData(name, account, password, portrait);
             userService.addUserData(userData); // 调用用户服务类, 插入数据到数据库
-            log.info("用户注册成功, 用户账号:"+account);
+            log.info("用户注册成功, 用户账号:" + account);
             return new Result("数据添加成功");
         } catch (Exception e) {
-            log.info("用户注册失败, 用户账号:"+ mapData.get("account"));
+            log.info("用户注册失败, 用户账号:" + mapData.get("account"));
             return new Result(Code.SQLERR, (Object) "数据添加失败");
         }
     }

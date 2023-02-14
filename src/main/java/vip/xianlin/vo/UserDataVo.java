@@ -1,7 +1,5 @@
 package vip.xianlin.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import vip.xianlin.domain.UserData;
 
@@ -13,7 +11,7 @@ public class UserDataVo {
     private String portrait; // 用户头像(base64)
     
     public UserDataVo(UserData userData) {
-        if (userData!=null) {
+        if (userData != null) {
             this.id = userData.getId();
             this.name = userData.getName();
             this.account = userData.getAccount();

@@ -19,10 +19,10 @@ public class EmailController {
     public Result sendVerificationCode(@PathVariable String email) {
         boolean flag = emailService.sendEmailVerificationCode(email);
         if (flag) {
-            log.info("邮件发送成功, 收信人:"+email);
+            log.info("邮件发送成功, 收信人:" + email);
             return new Result("邮件发送成功");
         }
-        log.info("邮件发送失败, 收信人:"+email);
+        log.info("邮件发送失败, 收信人:" + email);
         return new Result(Code.BUSINESS_ERR, (Object) "邮件发送失败");
     }
     

@@ -1,6 +1,5 @@
 package vip.xianlin.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -8,7 +7,7 @@ import vip.xianlin.controller.interceptor.JwtInterceptor;
 import vip.xianlin.controller.interceptor.LogInterceptor;
 
 @Configuration//定义此类为配置类
-public class InterceptorConfig implements WebMvcConfigurer{
+public class InterceptorConfig implements WebMvcConfigurer {
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -20,7 +19,7 @@ public class InterceptorConfig implements WebMvcConfigurer{
         //excludePathPatterns排除的路径
         String[] excludePathPatterns = {
                 // 排除users路径
-                "/users/**","/error", "/email/**", "/token/**", "/static/**", "/article/read/**"
+                "/users/**", "/error", "/email/**", "/token/**", "/static/**", "/article/read/**"
         };
         //创建用户拦截器对象并指定其拦截的路径和排除的路径
         registry.addInterceptor(new JwtInterceptor()).addPathPatterns(addPathPatterns).excludePathPatterns(excludePathPatterns);

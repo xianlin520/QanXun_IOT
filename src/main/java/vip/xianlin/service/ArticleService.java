@@ -5,24 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vip.xianlin.controller.util.Code;
-import vip.xianlin.controller.util.Result;
 import vip.xianlin.dao.ArticleDao;
 import vip.xianlin.dao.UserArticleDao;
 import vip.xianlin.domain.ArticleData;
 import vip.xianlin.domain.UserArticleData;
 import vip.xianlin.domain.UserData;
-import vip.xianlin.util.JwtUtil;
 import vip.xianlin.vo.ArticleDataVo;
 import vip.xianlin.vo.UserDataVo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service // 标注为Service
@@ -42,25 +35,26 @@ public class ArticleService {
     /**
      * 传入文章id, 返回文章信息, 作者信息, 用户收藏信息
      * 如果userId为null, 用户收藏信息为null
-     * @param id 文章id
+     *
+     * @param id     文章id
      * @param userId 用户id
      * @return 文章信息, 作者信息, 用户收藏信息
      */
     public ArticleDataVo getArticleData(Integer id, Integer userId) {
         // 更新文章浏览量, 喜欢量, 收藏量
         upDataArticleLike(id);
-    
+        
         // 进行数据库查询
         ArticleData articleData = queryByID(id);
-        if (articleData==null) {
+        if (articleData == null) {
             return null;
         }
         // 查询作者信息
         UserData userData = userService.queryUserByID(articleData.getUserKey());
-    
+        
         // 查询用户收藏信息, 如果用户未登录, 则返回用户收藏信息为null
         UserDataVo userDataVo = new UserDataVo(userData);
-    
+        
         // 查询用户收藏信息, 如果用户未登录, 则返回用户收藏信息为null
         UserArticleData userArticleData = Optional.ofNullable(userId)
                 .map(uid -> userArticleService.selectById(id, uid))
@@ -84,7 +78,8 @@ public class ArticleService {
     
     /**
      * 查询指定字符串的文章, 并分页
-     * @param data 查询字符串
+     *
+     * @param data    查询字符串
      * @param pageNum 当前页
      * @return 返回查询结果
      */
@@ -101,9 +96,11 @@ public class ArticleService {
     }*/
     
     // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
+    
     /**
      * 指定文章浏览量+1
      * 更新指定文章的喜欢数和收藏数
+     *
      * @param id 文章id
      */
     public void upDataArticleLike(Integer id) {

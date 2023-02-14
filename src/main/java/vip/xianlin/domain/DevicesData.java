@@ -10,7 +10,7 @@ import lombok.Data;
 @TableName("t_devices")
 public class DevicesData {
     @JsonIgnore // 此注解可忽略id字段, 前端就算传入也不会解析
-    @TableId(value="id" , type = IdType.AUTO) // 设置id策略为自增
+    @TableId(value = "id", type = IdType.AUTO) // 设置id策略为自增
     private Integer id; // 设备ID, 数据库自增, 主键
     private String name; // 设备名称
     private String uid; // 设备UID

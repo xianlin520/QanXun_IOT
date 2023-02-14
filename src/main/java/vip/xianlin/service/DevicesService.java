@@ -16,8 +16,10 @@ public class DevicesService {
     private DevicesDao devicesDao;
     
     // 根据数据, 使用MybatisPlus插入数据
+    
     /**
      * 插入数据
+     *
      * @param devicesData 设备信息数据
      * @return 是否插入成功(成功返回true, 失败返回false)
      */
@@ -38,6 +40,7 @@ public class DevicesService {
     
     /**
      * 根据用户ID获取设备信息
+     *
      * @param userId 用户ID
      * @return 设备信息列表
      */
@@ -46,11 +49,6 @@ public class DevicesService {
                 new QueryWrapper<DevicesData>().eq("user_key", userId)
         );
     }
-    
-    
-    
-    
-    
     
     
 }

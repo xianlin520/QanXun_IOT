@@ -19,7 +19,6 @@ import vip.xianlin.vo.UserDataVo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,6 +39,7 @@ public class ArticleController {
     
     /**
      * 传入用户收藏信息, 更新用户收藏信息
+     *
      * @return 返回更新结果
      */
     @PutMapping("/upuserarticle")
@@ -48,14 +48,13 @@ public class ArticleController {
         userArticleData.setUserId(userId);
         try {
             articleService.addUserArticleData(userArticleData);
-            log.info("文章收藏数据更新成功"+userArticleData);
+            log.info("文章收藏数据更新成功" + userArticleData);
             return new Result("成功");
         } catch (Exception e) {
-            log.info("文章收藏添加失败"+userArticleData);
+            log.info("文章收藏添加失败" + userArticleData);
             return new Result(Code.SQLERR, (Object) "失败");
         }
     }
-    
     
     
     @GetMapping("/list/{id}")
@@ -66,18 +65,20 @@ public class ArticleController {
     
     /**
      * 分页查询项目信息
-     * @param pageNum 当前页
+     *
+     * @param pageNum  当前页
      * @param pageSize 每页数量
      * @return 返回查询结果
      */
     @GetMapping("/read/page/{pageSize}/{pageNum}")
-    public Result queryArticleDataByPage(@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+    public Result queryArticleDataByPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         IPage<ArticleData> articleDataIPage = articleService.queryArticleDataByPage(pageNum, pageSize);
         return new Result(articleDataIPage);
     }
     
     /**
      * 传入文章ID, 获取文章信息
+     *
      * @return 返回结果
      */
     @GetMapping("/article/{id}")
@@ -101,7 +102,8 @@ public class ArticleController {
     /**
      * 传入文章id, 返回文章信息, 作者信息, 用户收藏信息
      * 如果用户未登录, 则返回用户收藏信息为null
-     * @param id 文章id
+     *
+     * @param id  文章id
      * @param res 请求头
      * @return 返回文章信息, 作者信息, 用户收藏信息
      */
@@ -142,7 +144,7 @@ public class ArticleController {
         String category = articleData.getCategory();
         String content = articleData.getContent();
         String cover = articleData.getCover();
-        if (title == null || category == null || content == null||cover==null) {
+        if (title == null || category == null || content == null || cover == null) {
             log.info("文章添加失败, 数据不全");
             return new Result(Code.BUSINESS_ERR, (Object) "信息不全");
         }

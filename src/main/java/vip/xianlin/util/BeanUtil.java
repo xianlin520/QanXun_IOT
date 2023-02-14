@@ -6,9 +6,6 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
-import java.util.List;
-
 // 此类用于从工具类内调用服务类
 @Slf4j
 public class BeanUtil implements ApplicationContextAware, DisposableBean {
@@ -19,12 +16,11 @@ public class BeanUtil implements ApplicationContextAware, DisposableBean {
      * 从静态变量applicationContext中取得Bean, 自动转型为所赋值对象的类型.
      */
     public static <T> T getBean(Class<T> requiredType) {
-        if(applicationContext==null){
+        if (applicationContext == null) {
             throw new IllegalStateException("applicaitonContext属性未注入, 请在SpringBoot启动类中注册BeanUtil.");
         }
         return applicationContext.getBean(requiredType);
     }
-    
     
     
     @Override

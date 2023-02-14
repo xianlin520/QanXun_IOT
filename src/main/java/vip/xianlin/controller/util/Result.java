@@ -10,7 +10,7 @@ public class Result {
         this.msg = msg;
     }
     
-    public Result(Object data){
+    public Result(Object data) {
         this.data = data;
     }
     

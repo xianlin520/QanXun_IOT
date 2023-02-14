@@ -24,7 +24,8 @@ public interface ArticleDao extends BaseMapper<ArticleData> {
     
     /**
      * 对文章数据进行查询, 并分页返回, 页码大小默认5
-     * @param page 页码
+     *
+     * @param page        页码
      * @param queryString 查询字符串
      * @return 返回分页数据
      */
@@ -33,8 +34,10 @@ public interface ArticleDao extends BaseMapper<ArticleData> {
     
     
     // 此接口会先查询对应文章id的喜欢数和收藏数, 然后写入到文章表对应列中
+    
     /**
      * 更新文章的喜欢数和收藏数
+     *
      * @param id 文章id
      */
     @Update("UPDATE t_article a, \n" +

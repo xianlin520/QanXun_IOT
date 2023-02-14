@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import vip.xianlin.controller.util.Code;
 import vip.xianlin.exception.BusinessException;
 import vip.xianlin.util.JwtUtil;
-import vip.xianlin.controller.util.Code;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +28,11 @@ public class JwtInterceptor implements HandlerInterceptor {
         
         // 验证token是否是null
         if (token == null) {
-            throw new BusinessException(Code.BUSINESS_ERR ,"无Token, 请在请求头内携带Token");
+            throw new BusinessException(Code.BUSINESS_ERR, "无Token, 请在请求头内携带Token");
         }
         // 验证token是否合法, 是否过期
         if (!JwtUtil.checkSign(token)) {
-            throw new BusinessException(Code.BUSINESS_ERR ,"Token失效, 请重新获取Token");
+            throw new BusinessException(Code.BUSINESS_ERR, "Token失效, 请重新获取Token");
         }
         // 验证token内id信息是否存在
         if (!JwtUtil.checkSignByToken(token)) {

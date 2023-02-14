@@ -22,6 +22,7 @@ public class JwtUtil {
     
     /**
      * 根据请求头内的Token, 获取Token内的用户ID
+     *
      * @param res 传入请求头
      * @return 返回用户ID(userID)
      */
@@ -39,6 +40,7 @@ public class JwtUtil {
     
     /**
      * 传入token, 根据token中的用户id, 查询数据库
+     *
      * @param token 传入token
      * @return 返回查询结果(是否存在)
      */
@@ -49,7 +51,7 @@ public class JwtUtil {
             UserService userService = BeanUtil.getBean(UserService.class);
             UserData userData = userService.queryUserByID(id); // 返回查询结果
             return userData != null;
-        }catch (JWTVerificationException e) {
+        } catch (JWTVerificationException e) {
 //            throw new RuntimeException("token 无效，请重新获取");
             return false;
         }
@@ -74,9 +76,10 @@ public class JwtUtil {
     
     /**
      * 生成jwt字符串，24小时后过期  JWT(json web token)
-     * @param userId 用户ID
+     *
+     * @param userId                                                              用户ID
      * @param info,Map的value只能存放值的类型为：Map，List，Boolean，Integer，Long，Double，String and Date
-     * */
+     */
     public static String sign(String userId, Map<String, Object> info) {
         try {
             Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME); // 获取过期时间
@@ -94,18 +97,19 @@ public class JwtUtil {
     
     /**
      * 校验token
+     *
      * @param token jwt字符串
      * @return true:校验通过，false:校验失败
-     * */
+     */
     public static boolean checkSign(String token) {
         try {
-            Algorithm algorithm  = Algorithm.HMAC256(SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(SECRET);
             JWTVerifier verifier = JWT.require(algorithm)
                     //.withClaim("username, username)
                     .build();
             verifier.verify(token);
             return true;
-        }catch (JWTVerificationException e) {
+        } catch (JWTVerificationException e) {
 //            throw new RuntimeException("token 无效，请重新获取");
             return false;
         }
@@ -113,27 +117,29 @@ public class JwtUtil {
     
     /**
      * 根据token获取userId
+     *
      * @param token jwt字符串
      * @return
-     * */
+     */
     public static String getUserUuid(String token) {
         try {
             String userId = JWT.decode(token).getAudience().get(0);
             return userId;
-        }catch (JWTDecodeException e) {
+        } catch (JWTDecodeException e) {
             return null;
         }
     }
     
     /**
      * 根据token获取自定义数据info
+     *
      * @param token jwt字符串
      * @return
-     * */
+     */
     public static Map<String, Object> getInfo(String token) {
         try {
             return JWT.decode(token).getClaim("info").asMap();
-        }catch (JWTDecodeException e) {
+        } catch (JWTDecodeException e) {
             return null;
         }
     }

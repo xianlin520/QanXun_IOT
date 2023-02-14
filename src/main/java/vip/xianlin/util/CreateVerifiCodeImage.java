@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class CreateVerifiCodeImage {
     
-    private static int WIDTH = 90;
-    private static int HEIGHT = 35;
-    private static int FONT_SIZE = 20; //字符大小
+    private static final int WIDTH = 90;
+    private static final int HEIGHT = 35;
+    private static final int FONT_SIZE = 20; //字符大小
     private static char[] verifiCode; //验证码
     private static BufferedImage verifiCodeImage; //验证码图片
     

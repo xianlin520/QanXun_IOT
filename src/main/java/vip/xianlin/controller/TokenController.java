@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import vip.xianlin.controller.util.Code;
 import vip.xianlin.controller.util.Result;
 import vip.xianlin.util.CreateVerifiCodeImage;
 
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -36,13 +34,13 @@ public class TokenController {
     
     // 获取图片验证码
     @GetMapping("/getVerifiCodeImage")
-    public void getVerifiCodeImage(HttpServletRequest request, HttpServletResponse response){
+    public void getVerifiCodeImage(HttpServletRequest request, HttpServletResponse response) {
         BufferedImage verifiCodeImage = CreateVerifiCodeImage.getVerifiCodeImage();
         String verifiCode = new String(CreateVerifiCodeImage.getVerifiCode());
         HttpSession session = request.getSession();
-        session.setAttribute("verifiCode",verifiCode);
+        session.setAttribute("verifiCode", verifiCode);
         try {
-            ImageIO.write(verifiCodeImage,"JPEG",response.getOutputStream());
+            ImageIO.write(verifiCodeImage, "JPEG", response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +57,7 @@ public class TokenController {
     // 根据文件名返回日志内容
     @GetMapping("/getlogdata/{logFilePath}")
     public String getLogsFileData(@PathVariable String logFilePath) throws Exception {
-        logFilePath = logPath+"/"+ logFilePath;
+        logFilePath = logPath + "/" + logFilePath;
 //        log.info(logpath);
         try {
             logFilePath = new String(Files.readAllBytes(Paths.get(logFilePath)));
