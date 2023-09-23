@@ -67,7 +67,7 @@ spring:
 
   # 配置Redis数据源
   redis:
-    host: api.shuxinxin.top # 连接地址
+    host: 49.233.172.191 # 连接地址
     port: 6379 # 连接端口
     jedis:
       pool:
