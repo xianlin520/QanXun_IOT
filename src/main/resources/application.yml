@@ -10,7 +10,7 @@ spring:
     host: smtp.163.com   # 声明邮箱域名
     port: 465             # 邮箱端口
     username: 15653674386@163.com    # 邮箱账号
-    password: RBNJGWNAHZSMLRTO   # 邮箱授权码
+    password: PITHQADAOMQATXRD   # 邮箱授权码
     protocol: smtp       # 协议
     properties:
       mail:
